@@ -1,0 +1,27 @@
+{
+  "_source": "IS 10462 Part 2 (1991) Table 1 — Fictitious Conductor Diameter",
+  "_note": "These are fictitious diameters used for sheath/covering calculations. For compacted circular conductor OD, add 0.2 mm safety margin at calculation time.",
+  "table": [
+    {"area_mm2": 1.5,  "fictitious_dia_mm": 1.4},
+    {"area_mm2": 2.5,  "fictitious_dia_mm": 1.8},
+    {"area_mm2": 4,    "fictitious_dia_mm": 2.3},
+    {"area_mm2": 6,    "fictitious_dia_mm": 2.8},
+    {"area_mm2": 10,   "fictitious_dia_mm": 3.6},
+    {"area_mm2": 16,   "fictitious_dia_mm": 4.5},
+    {"area_mm2": 25,   "fictitious_dia_mm": 5.6},
+    {"area_mm2": 35,   "fictitious_dia_mm": 6.7},
+    {"area_mm2": 50,   "fictitious_dia_mm": 8.0},
+    {"area_mm2": 70,   "fictitious_dia_mm": 9.4},
+    {"area_mm2": 95,   "fictitious_dia_mm": 11.0},
+    {"area_mm2": 120,  "fictitious_dia_mm": 12.4},
+    {"area_mm2": 150,  "fictitious_dia_mm": 13.8},
+    {"area_mm2": 185,  "fictitious_dia_mm": 15.3},
+    {"area_mm2": 240,  "fictitious_dia_mm": 17.5},
+    {"area_mm2": 300,  "fictitious_dia_mm": 19.5},
+    {"area_mm2": 400,  "fictitious_dia_mm": 22.6},
+    {"area_mm2": 500,  "fictitious_dia_mm": 25.2},
+    {"area_mm2": 630,  "fictitious_dia_mm": 28.5},
+    {"area_mm2": 800,  "fictitious_dia_mm": 31.9},
+    {"area_mm2": 1000, "fictitious_dia_mm": 35.7}
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "families": [
+    {
+      "code": "LT_PVC_FLEX",
+      "name": "LT PVC Flexible",
+      "standard": "IS 694",
+      "designation_patterns": ["Y/FR-LSH", "YY/FR-LSH", "YY", "Y"],
+      "layers": ["conductor", "pvc_insulation", "pvc_frlsh_sheath"],
+      "operations": [
+        "Bunching/Stranding",
+        "Insulation Extrusion",
+        "Core Colour/Numbering",
+        "Cabling/Laying Up",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "LT_XLPE_UNARM",
+      "name": "LT XLPE Unarmoured",
+      "standard": "IS 7098-1",
+      "designation_patterns": ["2XY", "A2XY", "2XY-FRLSH", "A2XY-FRLSH"],
+      "layers": ["conductor", "xlpe_insulation", "frlsh_outer_sheath"],
+      "operations": [
+        "Stranding",
+        "Insulation Extrusion (XLPE)",
+        "Core Colour/Numbering",
+        "Cabling/Laying Up",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "LT_XLPE_ARMOURED",
+      "name": "LT XLPE Flat Strip Armoured",
+      "standard": "IS 7098-1",
+      "designation_patterns": ["2XFY", "A2XFY", "2XFY-FRLSH", "A2XFY-FRLSH"],
+      "layers": ["conductor", "xlpe_insulation", "bedding", "gs_flat_strip_armour", "frlsh_outer_sheath"],
+      "operations": [
+        "Stranding",
+        "Insulation Extrusion (XLPE)",
+        "Core Colour/Numbering",
+        "Cabling/Laying Up",
+        "Bedding Tape/Extrusion",
+        "Armoring",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "HT_11KV_SCREENED",
+      "name": "HT 11kV XLPE Screened Armoured",
+      "standard": "IS 7098-2",
+      "designation_patterns": ["A2XIFY", "2XIFY", "A2XIFY-FRLSH", "2XIFY-FRLSH"],
+      "layers": [
+        "conductor",
+        "conductor_screen",
+        "xlpe_insulation",
+        "insulation_screen",
+        "copper_tape_screen",
+        "bedding",
+        "gs_flat_strip_armour",
+        "frlsh_outer_sheath"
+      ],
+      "operations": [
+        "Stranding",
+        "3-in-1 Extrusion (Cond.Screen + XLPE + Ins.Screen)",
+        "Core Identification",
+        "Copper Tape Wrapping",
+        "Cabling/Laying Up",
+        "Bedding Extrusion",
+        "Armoring",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "CTRL_PVC_UNARM",
+      "name": "Control Cable PVC Unarmoured",
+      "standard": "IS 1554-1",
+      "designation_patterns": ["CVVS", "CVV", "CY", "CYCY"],
+      "layers": [
+        "conductor",
+        "pvc_insulation",
+        "binder_tape",
+        "pvc_inner_sheath",
+        "pvc_outer_sheath"
+      ],
+      "operations": [
+        "Bunching/Stranding",
+        "PVC Insulation Extrusion",
+        "Core Identification/Numbering",
+        "Cabling/Laying Up",
+        "Binder Tape Application",
+        "Inner Sheath Extrusion",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "CTRL_PVC_ARMOURED",
+      "name": "Control Cable PVC Round Wire Armoured",
+      "standard": "IS 1554-1",
+      "designation_patterns": ["CVVSY", "CVVY", "CYSY"],
+      "layers": [
+        "conductor",
+        "pvc_insulation",
+        "binder_tape",
+        "pvc_inner_sheath",
+        "gs_round_wire_armour",
+        "pvc_outer_sheath"
+      ],
+      "operations": [
+        "Bunching/Stranding",
+        "PVC Insulation Extrusion",
+        "Core Identification/Numbering",
+        "Cabling/Laying Up",
+        "Binder Tape Application",
+        "Inner Sheath Extrusion",
+        "Round Wire Armoring",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "MV_XLPE_SCREENED",
+      "name": "MV 22kV/33kV XLPE Screened Armoured",
+      "standard": "IS 7098-2/3",
+      "designation_patterns": ["A2XIFY-33", "2XIFY-33", "A2XIFY-22", "2XIFY-22", "A2XFY-33", "A2XFY-22"],
+      "layers": [
+        "conductor",
+        "conductor_screen",
+        "xlpe_insulation",
+        "insulation_screen",
+        "copper_tape_screen",
+        "swelling_tape",
+        "bedding",
+        "gs_flat_strip_armour",
+        "frlsh_outer_sheath"
+      ],
+      "operations": [
+        "Stranding",
+        "3-in-1 Extrusion (Cond.Screen + XLPE + Ins.Screen)",
+        "Core Identification",
+        "Copper Tape Wrapping",
+        "Swelling Tape Application",
+        "Cabling/Laying Up",
+        "Bedding Extrusion",
+        "Armoring",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "INSTR_SCREENED",
+      "name": "Instrumentation Cable Screened",
+      "standard": "IS 1554 / IEC 60092",
+      "designation_patterns": ["ISCYSY", "ISFY", "ISC"],
+      "layers": [
+        "conductor",
+        "pvc_insulation",
+        "petp_tape_screen",
+        "drain_wire",
+        "binding_tape",
+        "pvc_inner_sheath",
+        "gs_round_wire_armour",
+        "pvc_outer_sheath"
+      ],
+      "operations": [
+        "Bunching/Stranding",
+        "PVC Insulation Extrusion",
+        "Pair/Triple Formation",
+        "PETP Tape + Drain Wire Application",
+        "Cabling/Laying Up",
+        "Binding Tape Application",
+        "Inner Sheath Extrusion",
+        "Armoring",
+        "Outer Sheath Extrusion",
+        "Drum Winding"
+      ]
+    },
+    {
+      "code": "FLEX_CLASS5",
+      "name": "Flexible Cable Class 5/6",
+      "standard": "IS 694 / IEC 60227",
+      "designation_patterns": ["H05VV-F", "H07VV-F", "H07RN-F", "2XH", "YY-J"],
+      "layers": [
+        "fine_wire_conductor",
+        "pvc_insulation",
+        "pvc_outer_sheath"
+      ],
+      "operations": [
+        "Bunching (Class 5/6)",
+        "PVC Insulation Extrusion",
+        "Core Colour/Numbering",
+        "Cabling/Laying Up",
+        "Outer Sheath Extrusion",
+        "Drum/Coil Winding"
+      ]
+    }
+  ]
+}

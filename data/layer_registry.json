@@ -1,0 +1,302 @@
+{
+  "_meta": {
+    "description": "Master registry of all cable layer types. Defines formula type, required inputs, density reference, and calculation notes.",
+    "formula_types": {
+      "conductor_weight":    "ρ/R_DC × density × lay_factor",
+      "annular_layer":       "(π/4)(OD² - ID²) × density × lay_factor",
+      "flat_strip_armour":   "n_strips × w × t × density × lay × coverage",
+      "round_wire_armour":   "n_wires × (π/4 × d²) × density × lay × coverage",
+      "copper_tape_screen":  "π × mean_OD × (1+overlap/100) × t × density × n_cores",
+      "copper_wire_screen":  "n_wires × (π/4 × d²) × density × lay_factor × n_cores",
+      "tape_wrap":           "π × mean_OD × (1+overlap/100) × t × density",
+      "drain_wire":          "(π/4 × d²) × density × n_pairs",
+      "pp_filler":           "((π/4×OD_cab²) - n×(π/4×OD_core²)) × fill_factor × density"
+    }
+  },
+
+  "conductor": {
+    "display_name": "Conductor",
+    "formula_type": "conductor_weight",
+    "required_inputs": ["dc_resistance_ohm_per_km", "conductor_material", "num_wires"],
+    "density_key": "copper_conductor",
+    "tolerance_applicable": false,
+    "lay_category": "conductor",
+    "cable_families": ["LT_PVC_FLEX", "LT_XLPE_UNARM", "LT_XLPE_ARMOURED", "HT_11KV_SCREENED", "CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED", "MV_XLPE_SCREENED"],
+    "notes": "area_mm2 = ρ/R_DC × resistance_factor; weight_kg_km = area × density × lay_factor × num_cores"
+  },
+
+  "fine_wire_conductor": {
+    "display_name": "Flexible Conductor (Class 5/6)",
+    "formula_type": "conductor_weight",
+    "required_inputs": ["dc_resistance_ohm_per_km", "conductor_material", "num_wires"],
+    "density_key": "copper_conductor",
+    "tolerance_applicable": false,
+    "lay_category": "fine_wire_conductor",
+    "cable_families": ["FLEX_CLASS5", "INSTR_SCREENED"],
+    "notes": "Same formula as conductor but uses fine_wire_conductor lay factor table (IS 694 Class 5/6 stranding)"
+  },
+
+  "xlpe_insulation": {
+    "display_name": "XLPE Insulation",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "xlpe_insulation",
+    "tolerance_applicable": true,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["LT_XLPE_UNARM", "LT_XLPE_ARMOURED", "HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "Tolerance factor applied to nominal thickness per Extrusion_Tolerances table; weight per core × num_cores"
+  },
+
+  "pvc_insulation": {
+    "display_name": "PVC Insulation",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "pvc_insulation",
+    "tolerance_applicable": true,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["LT_PVC_FLEX", "CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED", "INSTR_SCREENED", "FLEX_CLASS5"],
+    "notes": "Same annular formula as XLPE; density 1.40 g/cm³ for control/flexible, 1.50 for LT PVC flex"
+  },
+
+  "rubber_insulation": {
+    "display_name": "EPDM / EPR Rubber Insulation",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "rubber_epdm",
+    "tolerance_applicable": true,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["FLEX_CLASS5"],
+    "notes": "Rubber compound insulation; density 1.35 g/cm³; otherwise same formula as XLPE"
+  },
+
+  "conductor_screen": {
+    "display_name": "Conductor Screen (Semicon)",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "semicon_screen",
+    "tolerance_applicable": true,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "Inner semiconducting layer; co-extruded with XLPE in 3-in-1 process"
+  },
+
+  "insulation_screen": {
+    "display_name": "Insulation Screen (Semicon)",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "semicon_screen",
+    "tolerance_applicable": true,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "Outer semiconducting layer; co-extruded in 3-in-1 process"
+  },
+
+  "copper_tape_screen": {
+    "display_name": "Copper Tape Screen",
+    "formula_type": "copper_tape_screen",
+    "required_inputs": ["mean_od_mm", "tape_thickness_mm", "tape_overlap_pct"],
+    "density_key": "copper_tape_screen",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "weight = π × mean_OD × (1 + overlap/100) × thickness × density × num_cores; standard overlap 15%"
+  },
+
+  "copper_wire_screen": {
+    "display_name": "Copper Wire Concentric Screen",
+    "formula_type": "copper_wire_screen",
+    "required_inputs": ["D_screen_mm", "n_wires", "wire_diameter_mm"],
+    "density_key": "copper_wire_screen",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["MV_XLPE_SCREENED"],
+    "notes": "Alternative to copper tape; weight = n_wires × (π/4 × d²) × density × lay_factor × num_cores"
+  },
+
+  "swelling_tape": {
+    "display_name": "Swelling / Water-Blocking Tape",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["mean_od_mm", "tape_thickness_mm", "overlap_pct"],
+    "density_key": "swelling_tape",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["MV_XLPE_SCREENED"],
+    "notes": "Longitudinal water-blocking tape; weight = π × mean_OD × (1+overlap/100) × thickness × density"
+  },
+
+  "bedding": {
+    "display_name": "Bedding / PVC Inner Sheath",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "pvc_armoured_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["LT_XLPE_ARMOURED", "HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "Inner sheath over cabled cores before armour; cabling lay factor applied"
+  },
+
+  "pvc_inner_sheath": {
+    "display_name": "PVC Inner Sheath",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "pvc_inner_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED", "INSTR_SCREENED"],
+    "notes": "PVC inner sheath in control/instrumentation cables"
+  },
+
+  "gs_flat_strip_armour": {
+    "display_name": "GS Flat Strip Armour",
+    "formula_type": "flat_strip_armour",
+    "required_inputs": ["D_under_armour_mm", "strip_width_mm", "strip_thickness_mm", "gap_mm"],
+    "density_key": "gs_flat_strip_armour",
+    "tolerance_applicable": false,
+    "lay_category": "armour",
+    "cable_families": ["LT_XLPE_ARMOURED", "HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "n_strips = π(D_ua + t) / (w + gap); weight = n × w × t × 7.85 × lay × coverage_factor; IS 7098"
+  },
+
+  "gs_round_wire_armour": {
+    "display_name": "GS Round Wire Armour (SWA/AWA)",
+    "formula_type": "round_wire_armour",
+    "required_inputs": ["D_under_armour_mm", "wire_diameter_mm", "gap_mm"],
+    "density_key": "gs_round_wire_armour",
+    "tolerance_applicable": false,
+    "lay_category": "round_wire_armour",
+    "cable_families": ["CTRL_PVC_ARMOURED", "INSTR_SCREENED"],
+    "notes": "n_wires = π(D_ua + d_w) / (d_w + gap); weight = n × (π/4 × d²) × 7.85 × lay × coverage"
+  },
+
+  "pe_tape": {
+    "display_name": "PE Tape Screen",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["tape_thickness_mm", "overlap_pct", "n_pairs"],
+    "density_key": "pe_tape",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["INSTR_SCREENED"],
+    "notes": "PE backing tape, first layer of individual pair screen; default 40 microns, 15% overlap, density 1.50 g/cm³"
+  },
+
+  "al_mylar_pe_tape": {
+    "display_name": "Al Mylar PE Screen",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["tape_thickness_mm", "overlap_pct", "n_pairs"],
+    "density_key": "al_mylar_pe_tape",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["INSTR_SCREENED"],
+    "notes": "Al Mylar + PE laminate tape, second layer of individual pair screen; default 40 microns, 15% overlap, density 1.50 g/cm³"
+  },
+
+  "drain_wire": {
+    "display_name": "Drain Wire",
+    "formula_type": "fixed_weight",
+    "required_inputs": ["n_pairs"],
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["INSTR_SCREENED"],
+    "notes": "Bare copper drain wire (7/0.3mm or 0.5mm²) alongside each pair screen; fixed weight 4.5 kg/km costing / 3.0 kg/km production per pair; also bumps under-screen OD by 0.5mm"
+  },
+
+  "pp_filler": {
+    "display_name": "PP Rope Filler",
+    "formula_type": "pp_filler",
+    "required_inputs": ["od_cabled_mm", "od_core_mm", "n_cores", "fill_factor"],
+    "density_key": "pp_filler",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["MV_XLPE_SCREENED"],
+    "notes": "Fills interstices between cabled cores; weight = ((π/4×OD_cab²) - n×(π/4×OD_core²)) × fill_factor × density; typical fill_factor 0.87"
+  },
+
+  "binding_tape": {
+    "display_name": "Binding Tape (over cabling)",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["mean_od_mm", "tape_thickness_mm", "overlap_pct"],
+    "density_key": "binding_tape_pp",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["INSTR_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "PP/polyester tape over cabled assembly before sheath; weight = π × mean_OD × (1+overlap/100) × t × density"
+  },
+
+  "binder_tape": {
+    "display_name": "Binder Tape (over insulated cores)",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["mean_od_mm", "tape_thickness_mm", "overlap_pct"],
+    "density_key": "binder_tape",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "cable_families": ["CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED"],
+    "notes": "Applied over cabled insulated cores before inner sheath; weight = π × mean_OD × (1+overlap/100) × t × density"
+  },
+
+  "frlsh_outer_sheath": {
+    "display_name": "FRLSH Outer Sheath",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "frlsh_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["LT_XLPE_UNARM", "LT_XLPE_ARMOURED", "HT_11KV_SCREENED", "MV_XLPE_SCREENED"],
+    "notes": "FR-LSH compound outer sheath; cabling lay factor applied"
+  },
+
+  "pvc_outer_sheath": {
+    "display_name": "PVC Outer Sheath",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "pvc_outer_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED", "INSTR_SCREENED", "FLEX_CLASS5"],
+    "notes": "PVC outer sheath; cabling lay factor applied"
+  },
+
+  "pvc_frlsh_sheath": {
+    "display_name": "PVC / FRLSH Sheath (combined)",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "frlsh_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["LT_PVC_FLEX"],
+    "notes": "Combined designation for PVC or FR-LSH outer sheath in LT PVC flexible family"
+  },
+
+  "glass_mica_tape": {
+    "display_name": "Glass Mica Fire Barrier Tape",
+    "formula_type": "tape_wrap",
+    "required_inputs": ["mean_od_mm", "tape_thickness_mm", "n_tapes"],
+    "density_key": "glass_mica_tape",
+    "tolerance_applicable": false,
+    "lay_category": "none",
+    "apply_cabling_lay": false,
+    "cable_families": ["FIRE_SURVIVAL"],
+    "notes": "Glass mica tape applied per-core over conductor (before insulation); n_tapes=2; thickness: 0.12mm costing / 0.11mm production; overlap: 30% costing / 25% production; density=1.40 g/cm³; formula: n_tapes × π × (D+t) × (1+overlap/100) × t × density × n_cores"
+  },
+
+  "lszh_outer_sheath": {
+    "display_name": "LSZH Outer Sheath",
+    "formula_type": "annular_layer",
+    "required_inputs": ["id_mm", "nominal_thickness_mm", "thickness_type"],
+    "density_key": "frlsh_sheath",
+    "tolerance_applicable": true,
+    "lay_category": "cabling",
+    "apply_cabling_lay": true,
+    "cable_families": ["FIRE_SURVIVAL"],
+    "notes": "Low Smoke Zero Halogen outer sheath per IS 17505; uses FRLSH density (~1.35 g/cm³); same annular formula as frlsh_outer_sheath"
+  }
+}

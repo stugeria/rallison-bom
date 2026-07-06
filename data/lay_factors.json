@@ -1,0 +1,24 @@
+{
+  "conductor": [
+    {"min_wires": 1,   "max_wires": 7,   "costing": 1.005, "production": 1.005},
+    {"min_wires": 8,   "max_wires": 19,  "costing": 1.010, "production": 1.010},
+    {"min_wires": 20,  "max_wires": 37,  "costing": 1.020, "production": 1.020},
+    {"min_wires": 38,  "max_wires": 999, "costing": 1.025, "production": 1.025}
+  ],
+  "fine_wire_conductor": [
+    {"min_wires": 50,  "max_wires": 130, "costing": 1.030, "production": 1.025},
+    {"min_wires": 131, "max_wires": 999, "costing": 1.040, "production": 1.035}
+  ],
+  "cabling": {
+    "costing": 1.008,
+    "production": 1.007
+  },
+  "armour": {
+    "costing": 1.008,
+    "production": 1.007
+  },
+  "round_wire_armour": {
+    "costing": 1.008,
+    "production": 1.007
+  }
+}

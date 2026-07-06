@@ -1,0 +1,52 @@
+{
+  "_note": "Drum/packing cost as % of material cost. Rules evaluated top-to-bottom; first match wins. Override specific items in ravin_bom_master.xlsx → Drum_Costs sheet.",
+  "rules": [
+    {
+      "families": ["LT_PVC_FLEX", "FLEX_CLASS5"],
+      "max_cores": 1,
+      "drum_types": ["coil"],
+      "drum_pct": 0,
+      "label": "Single core flexible — coil (no drum cost)"
+    },
+    {
+      "families": ["LT_PVC_FLEX", "FLEX_CLASS5"],
+      "max_cores": 1,
+      "drum_types": ["wooden", "steel"],
+      "label": "Single core flexible — on drum",
+      "bands": [
+        {"up_to_mm2": 10, "drum_pct": 3.0},
+        {"up_to_mm2": 16, "drum_pct": 2.0},
+        {                 "drum_pct": 1.0}
+      ]
+    },
+    {
+      "families": ["LT_PVC_FLEX", "FLEX_CLASS5"],
+      "min_cores": 2,
+      "drum_pct": 3.0,
+      "label": "Multicore flexible"
+    },
+    {
+      "families": ["INSTR_SCREENED", "BMS_SCREENED"],
+      "drum_pct": 4.0,
+      "label": "Instrumentation / BMS cable"
+    },
+    {
+      "conductor": "aluminium",
+      "label": "Aluminium conductor cables",
+      "bands": [
+        {"up_to_mm2": 50, "drum_pct": 4.0},
+        {                 "drum_pct": 3.5}
+      ]
+    },
+    {
+      "conductor": "copper",
+      "label": "Copper conductor cables (catch-all)",
+      "bands": [
+        {"up_to_mm2": 6,  "drum_pct": 2.5},
+        {"up_to_mm2": 16, "drum_pct": 2.0},
+        {"up_to_mm2": 50, "drum_pct": 1.0},
+        {                 "drum_pct": 0.5}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "gtp_no": "_upload_BQACAgUAAxkBAAMyagRRp9OTh2Zkr_jAaCkIflpR4AsAAnsaAAJ0IyhUiDoBxWxfiCw7BA",
+  "requested_bom_type": "A",
+  "items": [
+    {
+      "item_no": "1",
+      "item_name": "3.5cx300A2XFY",
+      "item_code": "",
+      "config": "3.5C X 300 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 500.0,
+      "drum_type": "wooden",
+      "price_a": 2567161.94,
+      "price_b": 2366523.55,
+      "price_c": 2323104.3,
+      "drum_cost_per_km": 47746.73,
+      "drum_source": "pct_3.5%",
+      "steel_drum_alert": false
+    },
+    {
+      "item_no": "2",
+      "item_name": "3.5cx240A2XFY",
+      "item_code": "",
+      "config": "3.5C X 240 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 500.0,
+      "drum_type": "wooden",
+      "price_a": 2092614.73,
+      "price_b": 1927997.33,
+      "price_c": 1892966.14,
+      "drum_cost_per_km": 38920.61,
+      "drum_source": "pct_3.5%",
+      "steel_drum_alert": false
+    },
+    {
+      "item_no": "3",
+      "item_name": "3.5cx185A2XFY",
+      "item_code": "",
+      "config": "3.5C X 185 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 500.0,
+      "drum_type": "wooden",
+      "price_a": 1501435.42,
+      "price_b": 1382295.92,
+      "price_c": 1357500.7,
+      "drum_cost_per_km": 30463.91,
+      "drum_source": "pct_3.5%",
+      "steel_drum_alert": false
+    }
+  ]
+}

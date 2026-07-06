@@ -1,0 +1,17 @@
+{
+  "aluminium_conductor":  393,
+  "copper_conductor":     1280,
+  "xlpe_insulation":      170,
+  "pvc_insulation":       170,
+  "glass_mica_tape":      685,
+  "gs_flat_strip_armour": 86,
+  "gs_round_wire_armour": 86,
+  "lszh_sheath":          170,
+  "lszh_outer_sheath":    170,
+  "lszh_inner_sheath":    170,
+  "pvc_outer_sheath":     55,
+  "pvc_inner_sheath":     46,
+  "pvc_armoured_sheath":  46,
+  "frlsh_sheath":         90,
+  "hffr_sheath":          170
+}

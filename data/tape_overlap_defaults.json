@@ -1,0 +1,14 @@
+{
+  "_note": "Default tape overlap percentages. Used when GTP does not specify. Always use GTP value if present.",
+
+  "general_tape": {
+    "costing": 12,
+    "production": 8
+  },
+
+  "glass_mica_tape": {
+    "costing": 30,
+    "production": 25,
+    "_note": "Fixed — do not override from GTP unless explicitly stated"
+  }
+}

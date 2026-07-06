@@ -1,0 +1,18 @@
+{
+  "_note": "Conductor geometry configuration. Edit these values to adjust calculation behaviour without changing code. Mirror any changes in the Google Sheet / Excel config tab.",
+
+  "cable_od_safety_factor": {
+    "production": 1.03,
+    "costing": 1.05
+  },
+  "_cable_od_safety_note": "Dimensional design margin for SECTOR conductors only — NOT used in any weight calculation. Reported as design_laidup_od_mm in BOM output. Formula: design_laidup_od = (2r + 2×t_ins) × factor. Circular conductors (compacted, round stranded) have no safety factor.",
+
+  "sector_compaction_factor": 0.93,
+  "_sector_compaction_note": "Sector conductor fill: effective area = geometric_area × 0.93. Divide by 0.93 when computing geometric area from DC-resistance-derived electrical area.",
+
+  "compacted_circular_safety_margin_mm": 0.2,
+  "_compacted_circular_note": "Fixed absolute margin added to IS 10462 fictitious diameter before applying the safety factor above.",
+
+  "round_stranded_od_factor": 1.13,
+  "_round_stranded_note": "OD = factor × sqrt(area_mm2). Accounts for packing factor of non-compacted stranded conductors."
+}

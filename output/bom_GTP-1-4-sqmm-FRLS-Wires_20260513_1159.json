@@ -1,0 +1,66 @@
+{
+  "gtp_no": "GTP-1-4-sqmm-FRLS-Wires",
+  "requested_bom_type": "A",
+  "items": [
+    {
+      "item_no": "1",
+      "item_name": "FR-LSH",
+      "item_code": "",
+      "config": "1C x 1 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 100.0,
+      "drum_type": "roll",
+      "price_a": 14739.05,
+      "price_b": 13662.05,
+      "price_c": 13391.58,
+      "drum_cost_per_km": 284.72,
+      "drum_source": "pct_2.5%",
+      "steel_drum_alert": false
+    },
+    {
+      "item_no": "2",
+      "item_name": "FR-LSH",
+      "item_code": "",
+      "config": "1C x 1.5 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 100.0,
+      "drum_type": "roll",
+      "price_a": 21217.2,
+      "price_b": 19647.0,
+      "price_c": 19253.66,
+      "drum_cost_per_km": 409.78,
+      "drum_source": "pct_2.5%",
+      "steel_drum_alert": false
+    },
+    {
+      "item_no": "3",
+      "item_name": "FR-LSH",
+      "item_code": "",
+      "config": "1C x 2.5 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 100.0,
+      "drum_type": "roll",
+      "price_a": 35086.18,
+      "price_b": 32474.13,
+      "price_c": 31819.68,
+      "drum_cost_per_km": 677.59,
+      "drum_source": "pct_2.5%",
+      "steel_drum_alert": false
+    },
+    {
+      "item_no": "4",
+      "item_name": "FR-LSH",
+      "item_code": "",
+      "config": "1C x 4 SQMM",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 100.0,
+      "drum_type": "roll",
+      "price_a": 56162.93,
+      "price_b": 51960.79,
+      "price_c": 50909.77,
+      "drum_cost_per_km": 1084.55,
+      "drum_source": "pct_2.5%",
+      "steel_drum_alert": false
+    }
+  ]
+}

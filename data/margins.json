@@ -1,0 +1,80 @@
+{
+  "_note": "Margin % applied on (Material Cost + Drum/Packing Cost). Price = Cost / (1 - margin/100). Same margin across A/B/C types. Rules evaluated top-to-bottom; first match wins.",
+  "rules": [
+    {
+      "families": ["FIRE_SURVIVAL"],
+      "conductor": "copper",
+      "label": "FS Cable — Copper Conductor",
+      "bands": [
+        {"up_to_mm2": 2.5, "margin_pct": 40},
+        {"up_to_mm2": 6,   "margin_pct": 35},
+        {"up_to_mm2": 16,  "margin_pct": 30},
+        {"up_to_mm2": 50,  "margin_pct": 25},
+        {                  "margin_pct": 20}
+      ]
+    },
+    {
+      "families": ["FIRE_SURVIVAL"],
+      "conductor": "aluminium",
+      "label": "FS Cable — Aluminium Conductor",
+      "bands": [
+        {"up_to_mm2": 95,  "margin_pct": 50},
+        {"up_to_mm2": 150, "margin_pct": 45},
+        {                  "margin_pct": 40}
+      ]
+    },
+    {
+      "families": ["LT_PVC_FLEX", "FLEX_CLASS5"],
+      "max_cores": 1,
+      "label": "Flexible Single Core IS 694",
+      "bands": [
+        {"margin_pct": 20}
+      ]
+    },
+    {
+      "families": ["LT_PVC_FLEX", "FLEX_CLASS5"],
+      "min_cores": 2,
+      "label": "Flexible Multicore IS 694",
+      "bands": [
+        {"margin_pct": 22}
+      ]
+    },
+    {
+      "families": ["HT_11KV_SCREENED", "MV_XLPE_SCREENED", "HT_11KV", "MV"],
+      "label": "HT / MV Cables",
+      "bands": [
+        {"margin_pct": 28}
+      ]
+    },
+    {
+      "families": ["INSTR_SCREENED", "INSTR"],
+      "label": "Instrumentation Cable",
+      "bands": [
+        {"margin_pct": 33}
+      ]
+    },
+    {
+      "families": ["BMS_SCREENED", "BMS"],
+      "label": "BMS Cable (Overall Shielded Flexible Unarmoured)",
+      "bands": [
+        {"margin_pct": 33}
+      ]
+    },
+    {
+      "families": ["LT_XLPE_ARMOURED", "LT_XLPE_UNARM", "LT_PVC_ARMOURED", "LT_PVC_UNARM",
+                   "CTRL_PVC_UNARM", "CTRL_PVC_ARMOURED", "LT_PVC", "LT"],
+      "label": "LT Power & Control Cables",
+      "bands": [
+        {"up_to_mm2": 16, "margin_pct": 30},
+        {                 "margin_pct": 25}
+      ]
+    },
+    {
+      "families": ["_OTHER", "_SPECIAL"],
+      "label": "Other / Special Cables (braided, multi-layer, odd items)",
+      "bands": [
+        {"margin_pct": 50}
+      ]
+    }
+  ]
+}

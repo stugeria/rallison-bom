@@ -1,0 +1,18 @@
+{
+  "gtp_no": "211125 A",
+  "requested_bom_type": "A",
+  "items": [
+    {
+      "item_no": "1",
+      "item_name": "2C x 1.5 SQMM",
+      "item_code": "",
+      "config": "2C x 1.5 SQMM",
+      "voltage_kv": 0.6,
+      "delivery_length_m": 1000.0,
+      "drum_type": "wooden",
+      "price_a": 77328.71,
+      "price_b": 71365.82,
+      "price_c": 70353.92
+    }
+  ]
+}

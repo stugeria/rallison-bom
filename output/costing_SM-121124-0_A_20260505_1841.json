@@ -1,0 +1,1190 @@
+{
+  "gtp_ref": "SM-121124-0",
+  "gtp_type": "A",
+  "results": [
+    {
+      "item_no": 1,
+      "designation": "A2XY-FRLSH",
+      "config": "1C x 400mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 997.618,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 129.619,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 311.647,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 2,
+      "designation": "2XY-FRLSH",
+      "config": "2C x 50mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 796.084,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 41.002,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 15.689,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 113.013,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 3,
+      "designation": "2XY-FRLSH",
+      "config": "3.5C x 25mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 847.552,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 54.433,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 12.11,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 92.755,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 4,
+      "designation": "A2XY-FRLSH",
+      "config": "3.5C x 70mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 700.812,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 108.784,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 24.885,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 146.379,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 5,
+      "designation": "A2XY-FRLSH",
+      "config": "3.5C x 185mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 1893.04,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 258.888,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 49.519,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 261.182,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 6,
+      "designation": "A2XY-FRLSH",
+      "config": "3.5C x 240mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 2483.672,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 314.435,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 67.38,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 317.308,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 7,
+      "designation": "A2XY-FRLSH",
+      "config": "3.5C x 300mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 500,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 3104.588,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 371.832,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 74.414,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 372.956,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 8,
+      "designation": "2XY-FRLSH",
+      "config": "3C x 50mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 1194.126,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 61.504,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 15.689,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 113.013,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 9,
+      "designation": "A2XIFY-FRLSH",
+      "config": "3C x 70mm\u00b2",
+      "voltage_kv": "11/11",
+      "delivery_length_m": 1000,
+      "drum_type": "steel",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 525.609,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Conductor Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 11.694,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 679.811,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Insulation Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 25.548,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Copper Tape Screen",
+          "material": "copper_tape_screen",
+          "weight_kg_per_km": 60.403,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 75.571,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 379.814,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 294.27,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 10,
+      "designation": "A2XIFY-FRLSH",
+      "config": "3C x 185mm\u00b2",
+      "voltage_kv": "11/11",
+      "delivery_length_m": 500,
+      "drum_type": "steel",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 1419.78,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Conductor Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 18.96,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 945.05,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Insulation Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 32.814,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Copper Tape Screen",
+          "material": "copper_tape_screen",
+          "weight_kg_per_km": 77.284,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 112.455,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 455.777,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 448.337,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 11,
+      "designation": "A2XIFY-FRLSH",
+      "config": "3C x 300mm\u00b2",
+      "voltage_kv": "11/11",
+      "delivery_length_m": 500,
+      "drum_type": "steel",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 2328.441,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Conductor Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 24.172,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 1135.35,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Insulation Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 38.026,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Copper Tape Screen",
+          "material": "copper_tape_screen",
+          "weight_kg_per_km": 89.396,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 129.545,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 531.74,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 571.12,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 12,
+      "designation": "A2XIFY-FRLSH",
+      "config": "3C x 400mm\u00b2",
+      "voltage_kv": "11/11",
+      "delivery_length_m": 250,
+      "drum_type": "steel",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "aluminium_conductor",
+          "weight_kg_per_km": 2992.854,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Conductor Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 27.345,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 1251.165,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Insulation Screen",
+          "material": "semicon_screen",
+          "weight_kg_per_km": 41.199,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Copper Tape Screen",
+          "material": "copper_tape_screen",
+          "weight_kg_per_km": 96.767,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 139.946,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 582.382,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 610.054,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 13,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 2.5mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 83.152,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 16.415,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 5.741,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 51.054,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 14,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 4mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 133.66,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 19.727,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 6.562,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 55.359,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 15,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 6mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 200.056,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 23.109,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 7.401,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 59.756,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 16,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 10mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 336.704,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 28.746,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 8.8,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 67.085,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 17,
+      "designation": "2XFY-FRLSH",
+      "config": "4C x 16mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 535.8,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 32.058,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 9.621,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 101.284,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 66.627,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 18,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 16mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 535.8,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 32.058,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 9.621,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 71.391,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 19,
+      "designation": "2XFY-FRLSH",
+      "config": "4C x 25mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 847.552,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 54.433,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 12.11,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 126.605,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 77.149,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 20,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 25mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 847.552,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 54.433,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 12.11,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 92.755,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 21,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 35mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 1175.896,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 62.74,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 13.649,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 101.464,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 22,
+      "designation": "2XY-FRLSH",
+      "config": "4C x 50mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 1592.168,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 82.005,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 15.689,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 113.013,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    },
+    {
+      "item_no": 23,
+      "designation": "2XFY-FRLSH",
+      "config": "19C x 2.5mm\u00b2",
+      "voltage_kv": "1.1",
+      "delivery_length_m": 1000,
+      "drum_type": "wooden",
+      "material_cost_per_km": 0.0,
+      "drum_cost_per_km": 0.0,
+      "conversion_cost_per_km": 0.0,
+      "total_cost_per_km": 0.0,
+      "margin_pct": 15.0,
+      "floor_price_per_km": 0.0,
+      "selling_price_per_km": 0.0,
+      "selling_price_per_drum_length": 0.0,
+      "material_breakdown": [
+        {
+          "layer": "Conductor",
+          "material": "copper_conductor",
+          "weight_kg_per_km": 394.972,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "XLPE Insulation",
+          "material": "xlpe_insulation",
+          "weight_kg_per_km": 77.97,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Inner Sheath",
+          "material": "pvc_armoured_sheath",
+          "weight_kg_per_km": 5.741,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "GS Flat Strip Armour",
+          "material": "gs_flat_strip_armour",
+          "weight_kg_per_km": 75.963,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        },
+        {
+          "layer": "Outer Sheath",
+          "material": "frlsh_sheath",
+          "weight_kg_per_km": 50.223,
+          "price_per_kg": 0.0,
+          "cost_per_km": 0.0
+        }
+      ]
+    }
+  ]
+}
