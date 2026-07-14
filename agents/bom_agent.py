@@ -527,6 +527,77 @@ def _build_summary(gtp_no: str, bom_type: str, items: list[dict], price_key: str
     return "\n".join(lines)
 
 
+def _build_rm_prices_used(items: list[dict], bom_type: str) -> Optional[str]:
+    """List every raw-material price actually applied across the newly
+    processed items, so a mistake in the price sheet is easy to spot."""
+    prices: dict[str, float] = {}
+    for item in items:
+        for row in item.get("material_breakdown", {}).get(bom_type, []):
+            mat = row.get("material", "")
+            if mat:
+                prices[mat] = row.get("price_per_kg", 0.0)
+    if not prices:
+        return None
+
+    lines = [f"*Raw Material Prices Used (Type {bom_type})*", "```"]
+    lines.append(f"{'Material':<24}{'Rs/kg':>10}")
+    lines.append("─" * 34)
+    for mat in sorted(prices):
+        lines.append(f"{mat.replace('_', ' ').title():<24}{prices[mat]:>10,.2f}")
+    lines.append("```")
+    return "\n".join(lines)
+
+
+def _build_item_detail(item: dict, bom_type: str) -> Optional[str]:
+    """Full layer-by-layer BOM + costing breakdown for one cable, one BOM type —
+    weight, material, rate, and cost per layer, plus the cost/margin/price rollup.
+    Returns None if this item has no stored breakdown (e.g. a dedup-skipped item
+    that wasn't recomputed this run)."""
+    breakdown = item.get("material_breakdown", {}).get(bom_type)
+    if not breakdown:
+        return None
+
+    price_key = f"price_{bom_type.lower()}"
+    material_cost = item.get("material_cost_per_km", {}).get(bom_type, 0.0)
+    drum_cost = item.get("drum_cost_per_km", 0.0)
+    drawing_cost = item.get("drawing_cost_per_km", 0.0)
+    floor_cost = material_cost + drum_cost + drawing_cost
+    margin_pct = item.get("margin_pct", 0.0)
+    selling_price = item.get(price_key, floor_cost)
+
+    lines = [
+        f"*Item {item.get('item_no', '')} — {item.get('config', '')} {item.get('item_name', '')}* "
+        f"(Type {bom_type})",
+        f"_{item.get('delivery_length_m', '')}m {item.get('drum_type', '')} drum_",
+        "```",
+        f"{'Layer':<23}{'Wt(kg/km)':>11}{'Rate(Rs/kg)':>13}{'Cost(Rs/km)':>13}",
+        "─" * 60,
+    ]
+    for row in breakdown:
+        layer = (row.get("layer") or "")[:22]
+        lines.append(
+            f"{layer:<23}{row.get('weight_kg_per_km', 0):>11.3f}"
+            f"{row.get('price_per_kg', 0):>13.2f}{row.get('cost_per_km', 0):>13.2f}"
+        )
+    lines.append("─" * 60)
+    lines.append(f"{'Material cost/km':<24}Rs {material_cost:>13,.2f}")
+    lines.append(f"{'Drum cost/km':<24}Rs {drum_cost:>13,.2f}")
+    if drawing_cost:
+        lines.append(f"{'Drawing cost/km':<24}Rs {drawing_cost:>13,.2f}")
+    lines.append(f"{'Floor cost/km':<24}Rs {floor_cost:>13,.2f}")
+    lines.append(f"{'Margin %':<24}{margin_pct:>16.1f}")
+    lines.append(f"{'Selling price/km':<24}Rs {selling_price:>13,.2f}")
+    lines.append("```")
+
+    drum_source = item.get("drum_source")
+    if drum_source:
+        lines.append(f"_Drum cost source: {drum_source}_")
+    if item.get("steel_drum_alert"):
+        lines.append("⚠️ _Steel drum specified — review loading/handling cost._")
+
+    return "\n".join(lines)
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

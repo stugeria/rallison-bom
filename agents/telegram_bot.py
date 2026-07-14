@@ -86,7 +86,7 @@ class RequestsBackend(BaseRequest):
 
         return code, payload
 
-from agents.bom_agent import run_bom_agent
+from agents.bom_agent import run_bom_agent, _build_rm_prices_used, _build_item_detail
 from core.local_registry import upsert_row, get_margin
 
 logging.basicConfig(
@@ -263,9 +263,10 @@ async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await status.edit_text("Processing GTP — computing BOM for all cables...")
 
+    requested_type = "A"
     try:
         result = await asyncio.to_thread(
-            run_bom_agent, pdf_path, "A", False, OUTPUT_DIR
+            run_bom_agent, pdf_path, requested_type, False, OUTPUT_DIR
         )
     except Exception as e:
         logger.exception("BOM agent failed")
@@ -301,6 +302,18 @@ async def handle_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
 
     await status.edit_text(header, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+
+    # Full BOM + costing + raw material prices, per item, so mistakes in the
+    # GTP reading or the price sheet are easy to catch before quoting.
+    rm_prices_msg = _build_rm_prices_used(result["_all_items"], requested_type)
+    if rm_prices_msg:
+        await update.message.reply_text(rm_prices_msg, parse_mode=ParseMode.MARKDOWN)
+
+    for item in result["_all_items"]:
+        detail = _build_item_detail(item, requested_type)
+        if detail:
+            await update.message.reply_text(detail, parse_mode=ParseMode.MARKDOWN)
+            await asyncio.sleep(0.3)  # avoid Telegram flood limits on GTPs with many items
 
 
 async def handle_bom_type_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
