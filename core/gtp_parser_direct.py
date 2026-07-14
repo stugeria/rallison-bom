@@ -1045,12 +1045,14 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
     # ── Inner sheath ──────────────────────────────────────────────────────────
     sb = sections.get(_sheath_sec, "")
     sh_v1, sh_v2 = _find_vals(sb, "Nominal Thickness")
+    inner_sheath_thickness_type = "Nominal"
     if sh_v1 is None:
         sh_v1, sh_v2 = _find_vals(sb, "Minimum Thickness")
         if sh_v1 is not None:
             sh_v1 = round(sh_v1 + 0.2, 4)
         if sh_v2 is not None:
             sh_v2 = round(sh_v2 + 0.2, 4)
+        inner_sheath_thickness_type = "Minimum"
     inner_sheath_t = sh_v1 if col == 0 else sh_v2
 
     # ── Armour ────────────────────────────────────────────────────────────────
@@ -1069,12 +1071,14 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
     # ── Outer sheath ──────────────────────────────────────────────────────────
     ob = sections.get(_os_sec, "")
     os_nom_v1, os_nom_v2 = _find_vals(ob, "Nominal Thickness")
+    outer_sheath_thickness_type = "Nominal"
     if os_nom_v1 is None:
         os_nom_v1, os_nom_v2 = _find_vals(ob, "Minimum Thickness")
         if os_nom_v1 is not None:
             os_nom_v1 = round(os_nom_v1 + 0.2, 4)
         if os_nom_v2 is not None:
             os_nom_v2 = round(os_nom_v2 + 0.2, 4)
+        outer_sheath_thickness_type = "Minimum"
     outer_sheath_t = os_nom_v1 if col == 0 else os_nom_v2
 
     od_v1, od_v2 = _find_vals(ob, "Overall diameter")
@@ -1126,7 +1130,7 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
             "layer_name": "Inner Sheath",
             "material_key": "pvc_inner_sheath",
             "nominal_thickness_mm": inner_sheath_t,
-            "thickness_type": "Nominal",
+            "thickness_type": inner_sheath_thickness_type,
             "od_mm": None,
             "armour_strip_width_mm": None,
             "armour_strip_thickness_mm": None,
@@ -1161,7 +1165,7 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
             "layer_name": {"lszh_outer_sheath": "LSZH Outer Sheath", "frlsh_sheath": "FR-LSH Outer Sheath"}.get(os_mat, "Outer Sheath"),
             "material_key": os_mat,
             "nominal_thickness_mm": outer_sheath_t,
-            "thickness_type": "Nominal",
+            "thickness_type": outer_sheath_thickness_type,
             "od_mm": None,
             "armour_strip_width_mm": None,
             "armour_strip_thickness_mm": None,

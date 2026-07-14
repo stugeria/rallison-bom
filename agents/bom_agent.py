@@ -139,13 +139,32 @@ def _lookup_drum_cost(drum_costs: list[dict], product_family: str,
     return 0.0
 
 
+def _material_breakdown(bom_rows: list[dict], rm_prices: dict) -> list[dict]:
+    """Per-layer weight × RM price. The single source of truth for material cost —
+    both _price_bom and the standalone costing report are built from this."""
+    rows = []
+    for r in bom_rows:
+        mat = r.get("material", "")
+        weight = float(r.get("weight_kg_per_km", 0))
+        price = rm_prices.get(mat, 0.0)
+        rows.append({
+            "layer": r.get("layer"),
+            "material": mat,
+            "weight_kg_per_km": weight,
+            "price_per_kg": price,
+            "cost_per_km": round(weight * price, 2),
+        })
+    return rows
+
+
+def _material_cost(bom_rows: list[dict], rm_prices: dict) -> float:
+    return round(sum(row["cost_per_km"] for row in _material_breakdown(bom_rows, rm_prices)), 2)
+
+
 def _price_bom(bom_rows: list[dict], rm_prices: dict,
                drum_cost_per_km: float, conversion_cost_per_km: float,
                margin_pct: float, min_margin_override: Optional[float] = None) -> float:
-    material_cost = sum(
-        float(r.get("weight_kg_per_km", 0)) * rm_prices.get(r.get("material", ""), 0.0)
-        for r in bom_rows
-    )
+    material_cost = _material_cost(bom_rows, rm_prices)
     # Margin base = material cost + packing (drum) cost; conversion cost added on top
     margin_base = material_cost + drum_cost_per_km
     effective_margin = max(margin_pct, min_margin_override or 0.0)
@@ -346,13 +365,13 @@ def run_bom_agent(
         if steel_drum_alert:
             print(f"     ⚠ STEEL DRUM specified — manual loading cost adjustment may be needed")
 
+        # Material cost + breakdown for all 3 types (type A used as the drum-sizing reference)
+        material_breakdown = {t: _material_breakdown(boms[t]["costing"], rm_prices) for t in BOM_TYPES}
+        material_costs = {t: _material_cost(boms[t]["costing"], rm_prices) for t in BOM_TYPES}
+
         # Drum cost: material-% fallback or Excel exact entry
-        material_cost_a = sum(
-            float(r.get("weight_kg_per_km", 0)) * rm_prices.get(r.get("material", ""), 0.0)
-            for r in boms["A"]["costing"]
-        )
         drum_cost_km, drum_source = lookup_drum_cost_per_km(
-            material_cost_per_km=material_cost_a,
+            material_cost_per_km=material_costs["A"],
             product_family=product_family,
             conductor_material=conductor_material,
             area_mm2=area_mm2,
@@ -386,6 +405,10 @@ def run_bom_agent(
             "price_a": prices["A"], "price_b": prices["B"], "price_c": prices["C"],
             "drum_cost_per_km": drum_cost_km, "drum_source": drum_source,
             "steel_drum_alert": steel_drum_alert,
+            "margin_pct": margin_pct,
+            "material_cost_per_km": material_costs,        # {"A": .., "B": .., "C": ..}
+            "material_breakdown": material_breakdown,      # {"A": [...], "B": [...], "C": [...]}
+            "drawing_cost_per_km": drawing_cost_km,
             "boms": boms,
         }
         results.append(cable_result)

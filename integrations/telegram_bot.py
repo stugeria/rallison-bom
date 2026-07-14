@@ -112,14 +112,8 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         caption=f"Pricing Report — {cost_result['gtp_ref']} Type {cost_result['gtp_type']}"
                     )
 
-            # Send production BOM PDF (always send it — user can decide to keep or ignore)
-            if os.path.exists(bom_result["pdf_path"]):
-                with open(bom_result["pdf_path"], "rb") as f:
-                    await update.message.reply_document(
-                        document=f,
-                        filename=os.path.basename(bom_result["pdf_path"]),
-                        caption=f"Production BOM — {bom_result['gtp_ref']} Type {bom_result['gtp_type']}"
-                    )
+            # Note: bom_agent.py itself does not generate a PDF (only the JSON,
+            # local registry, and bom_detail.xlsx) — nothing further to send here.
 
         except Exception as e:
             logger.exception("Pipeline failed")
