@@ -758,6 +758,10 @@ def parse_gtp_direct(pdf_path: str, gtp_type_override: Optional[str] = None) -> 
         result = _parse_wire_datasheet_gtp(pdf_path, raw_text)
         result["cables"] = _validate_and_patch_cables(result["cables"])
         return result
+    if fmt == "srno_datasheet":
+        result = _parse_srno_gtp(pdf_path, raw_text)
+        result["cables"] = _validate_and_patch_cables(result["cables"])
+        return result
 
     basename = os.path.splitext(os.path.basename(pdf_path))[0]
     gtp_type = gtp_type_override
@@ -809,7 +813,7 @@ _COMPANY_SECTION_MAP = {
 
 
 def _detect_format(raw_text: str) -> str:
-    """Return 'company', 'datasheet', 'wire_datasheet', or 'ravin'."""
+    """Return 'company', 'datasheet', 'wire_datasheet', 'srno_datasheet', or 'ravin'."""
     head = raw_text[:800]
     # Multi-cable IS 17505 tabular format (company GTP)
     if "Sr. No." in head and "PROJECT :" in head:
@@ -817,9 +821,17 @@ def _detect_format(raw_text: str) -> str:
     # Single-cable technical data sheet (Sr No. without dot, Project :, Data Sheet no)
     if re.search(r"Sr\s*No\.?\s+Name", head) and re.search(r"Data Sheet no", head, re.I):
         return "datasheet"
-    # Multi-column Rallison wire data sheet (IS 694 style — multiple sizes side by side)
-    if re.search(r"DATA SHEET FOR", head, re.I) and head.count("SQMM") >= 2:
+    # Multi-column Rallison wire data sheet (IS 694 style — multiple sizes side by side).
+    # Size unit is usually "SQMM" but some sheets use "mm2"/"mm²" instead.
+    if re.search(r"DATA SHEET FOR", head, re.I) and (
+        head.count("SQMM") >= 2 or len(re.findall(r"mm2|mm²", head, re.I)) >= 2
+    ):
         return "wire_datasheet"
+    # Third-party lab GTP (e.g. LKB Engineering / "GTP Ref No") — numbered rows (1..14)
+    # with roman-numeral sub-items (i, ii, iii...), one or more cable variants stacked
+    # in the same PDF (e.g. same construction repeated for Class-2 and Class-5).
+    if re.search(r"Sr\s*No\.?\s+Description\s+Unit", head, re.I):
+        return "srno_datasheet"
     return "ravin"
 
 
@@ -1527,8 +1539,11 @@ def _parse_wire_datasheet_gtp(pdf_path: str, raw_text: str) -> dict:
     basename = os.path.splitext(os.path.basename(pdf_path))[0]
     gtp_ref = re.sub(r'\s+', '-', basename.strip())
 
-    # Count columns from SQMM occurrences in header
-    n_cols = len(re.findall(r'\bSQMM\b', raw_text[:600]))
+    # Count columns from SQMM occurrences in header — fall back to mm2/mm² if the
+    # sheet uses that unit instead
+    n_cols = len(re.findall(r'\bSQMM\b', raw_text[:600], re.I))
+    if n_cols == 0:
+        n_cols = len(re.findall(r'mm2|mm²', raw_text[:600], re.I))
     if n_cols == 0:
         return {"gtp_ref": gtp_ref, "customer": None, "project": None,
                 "date": None, "gtp_type": None, "cables": [], "_parser": "direct_wire_datasheet"}
@@ -1603,13 +1618,14 @@ def _parse_wire_datasheet_gtp(pdf_path: str, raw_text: str) -> dict:
         ins_t = ins_t_vals[i] if i < len(ins_t_vals) else None
         od   = od_vals[i] if i < len(od_vals) else None
 
-        # Build config string from header or from area fallback
+        # Build config string from header or from area fallback — always normalised
+        # to "mm²" regardless of whether the source sheet used SQMM or mm2/mm²
         if i < len(header_configs):
             raw_cfg = re.sub(r'\s+', ' ', header_configs[i].strip())
-            raw_cfg = re.sub(r'(\d)\s+C\s+', r'\1C ', raw_cfg)
-            config = f"{raw_cfg} SQMM"
+            raw_cfg = re.sub(r'(\d)\s+C\s+[Xx]\s+', r'\1C x ', raw_cfg)
+            config = f"{raw_cfg}mm²"
         else:
-            config = f"1C x {area} SQMM" if area else f"1C x ? SQMM"
+            config = f"1C x {area}mm²" if area else "1C x ?mm²"
 
         nc_m = re.match(r'(\d+(?:\.\d+)?)C', config, re.I)
         num_cores = float(nc_m.group(1)) if nc_m else 1.0
@@ -1648,4 +1664,252 @@ def _parse_wire_datasheet_gtp(pdf_path: str, raw_text: str) -> dict:
         "gtp_type": None,
         "cables":   cables,
         "_parser":  "direct_wire_datasheet",
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SR-NO DATASHEET FORMAT (third-party lab GTPs, e.g. LKB Engineering)
+# Single-column, plain-numbered rows (1..14) with roman-numeral sub-items
+# (i, ii, iii...). One PDF may stack several cable variants of the same
+# construction back to back (e.g. the same size repeated once per conductor
+# class) — each repetition is split out as its own "TECHNICAL PARTICULARS FOR"
+# block and returned as a separate cable.
+#   Sr No. Description Unit 2C X 1.5 mm2 (YWY HR-FR )
+#   1 Name of Manufacturer ...
+#   6 Conductor
+#     i Material Annealed Plain Copper Class-2 ...
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _split_srno_blocks(raw_text: str) -> list:
+    """Split into one block per cable variant, keyed on the repeating
+    'TECHNICAL PARTICULARS FOR ...' banner that starts each block."""
+    starts = [m.start() for m in re.finditer(r'TECHNICAL PARTICULARS FOR', raw_text, re.I)]
+    if not starts:
+        return [raw_text]
+    blocks = []
+    for i, start in enumerate(starts):
+        end = starts[i + 1] if i + 1 < len(starts) else len(raw_text)
+        blocks.append(raw_text[start:end])
+    return blocks
+
+
+def _split_srno_numbered_sections(block: str) -> dict:
+    """
+    Split a block into major sections keyed by their leading plain number
+    (e.g. '6' for Conductor, '9' for Armour). Only matches "N " at the start
+    of a line (whitespace right after the digits) so sub-items like '10.1'
+    (dot right after the digits, no space) are correctly excluded and stay
+    part of the parent section's text.
+    """
+    starts = []
+    for m in re.finditer(r'^(\d{1,2})\s+\S', block, re.MULTILINE):
+        starts.append((m.start(), m.group(1)))
+    if not starts:
+        return {}
+    sections = {}
+    for i, (start, sec_id) in enumerate(starts):
+        end = starts[i + 1][0] if i + 1 < len(starts) else len(block)
+        sections[sec_id] = block[start:end]
+    return sections
+
+
+def _parse_srno_cable(block: str, item_no: int) -> Optional[dict]:
+    """Parse one cable variant block into a cable dict."""
+    # ── GTP ref (per block — each repeated variant carries its own line) ────────
+    ref_m = re.search(r'GTP Ref No\s*:?\s*([^\n]+?)\s*Dt\b', block, re.I)
+    if not ref_m:
+        ref_m = re.search(r'GTP Ref No\s*:?\s*(\S+)', block, re.I)
+    gtp_ref = re.sub(r'\s+', '-', ref_m.group(1).strip()) if ref_m else None
+
+    # ── Config / num_cores / area from the "No of Cores X Size" row ─────────────
+    cores_m = re.search(r'No of Cores X Size\s+mm2\s+(\d+(?:\.\d+)?)\s*C\s*[Xx]\s*(\d+(?:\.\d+)?)', block, re.I)
+    if not cores_m:
+        return None
+    num_cores = float(cores_m.group(1))
+    area = float(cores_m.group(2))
+    config = f"{cores_m.group(1)}C x {cores_m.group(2)}mm²"
+
+    desig_m = re.search(r'Sr\s*No\.?\s+Description\s+Unit[^\n(]*\(([^)]+)\)', block, re.I)
+    designation = re.sub(r'\s+', '-', desig_m.group(1).strip()) if desig_m else config
+
+    sections = _split_srno_numbered_sections(block)
+
+    # ── Conductor (section 6) ────────────────────────────────────────────────
+    cond = sections.get("6", "")
+    conductor_material = "aluminium" if (
+        re.search(r'\bAluminium\b|\bAluminum\b', cond, re.I) and not re.search(r'\bCopper\b', cond, re.I)
+    ) else "copper"
+
+    class_m = re.search(r'Class[-\s]*(\d)', cond, re.I)
+    conductor_class = int(class_m.group(1)) if class_m else 2
+    fine_wire = conductor_class in (5, 6)
+
+    conductor_shape = "round"
+    if re.search(r'\bsector\b', cond, re.I):
+        conductor_shape = "sector"
+    elif re.search(r'\bcompact', cond, re.I) and not re.search(r'non[\s-]*compact', cond, re.I):
+        conductor_shape = "compacted"
+
+    rdc_m = re.search(r'Max\.?\s*D\.?C\.?\s*Conductor\s*Resistance[^\n]*?km\s+([\d.]+)', cond, re.I)
+    dc_resistance = float(rdc_m.group(1)) if rdc_m else None
+    if dc_resistance is None:
+        return None
+
+    # ── Insulation (section 7) ───────────────────────────────────────────────
+    ins = sections.get("7", "")
+    ins_mat = "pvc_insulation"
+    ins_name = "PVC Insulation"
+    if re.search(r'\bXLPE\b', ins, re.I) and not re.search(r'\bPVC\b', ins, re.I):
+        ins_mat, ins_name = "xlpe_insulation", "XLPE Insulation"
+    elif re.search(r'\bEPDM\b|\bEPR\b|\brubber\b', ins, re.I):
+        ins_mat, ins_name = "rubber_insulation", "EPDM/Rubber Insulation"
+    ins_t_m = re.search(r'Thickness of insulation\s*\(Nominal\)\s+([\d.]+)', ins, re.I)
+    ins_t = float(ins_t_m.group(1)) if ins_t_m else None
+
+    layers = []
+    if ins_t:
+        layers.append({
+            "layer_name": ins_name, "material_key": ins_mat,
+            "nominal_thickness_mm": ins_t, "thickness_type": "Nominal",
+            "od_mm": None, "armour_strip_width_mm": None,
+            "armour_strip_thickness_mm": None, "tape_overlap_pct": None,
+            "tape_thickness_mm": None,
+        })
+
+    # ── Inner sheath (section 8) — Minimum-only values get the standard +0.2mm
+    # manufacturing tolerance applied, same convention as the other parsers ──
+    inner = sections.get("8", "")
+    inner_m = re.search(r'Thickness\s*\(Minimum\)\s*mm\s+([\d.]+)', inner, re.I)
+    if inner_m:
+        inner_t = round(float(inner_m.group(1)) + 0.2, 4)
+        inner_mat = "lszh_inner_sheath" if re.search(r'LSZH|LSOH|LS0H', inner, re.I) else "pvc_inner_sheath"
+        layers.append({
+            "layer_name": "Inner Sheath", "material_key": inner_mat,
+            "nominal_thickness_mm": inner_t, "thickness_type": "Minimum",
+            "od_mm": None, "armour_strip_width_mm": None,
+            "armour_strip_thickness_mm": None, "tape_overlap_pct": None,
+            "tape_thickness_mm": None,
+        })
+
+    # ── Armour (section 9) ───────────────────────────────────────────────────
+    armour = sections.get("9", "")
+    is_round_wire = bool(re.search(r'round\s+wire', armour, re.I))
+    if is_round_wire:
+        dia_m = re.search(r'Thickness\s+mm\s+([\d.]+)\s*±', armour, re.I)
+        if dia_m:
+            layers.append({
+                "layer_name": "GS Round Wire Armour", "material_key": "gs_round_wire_armour",
+                "wire_diameter_mm": float(dia_m.group(1)), "gap_mm": 0.5, "od_mm": None,
+            })
+    else:
+        strip_m = re.search(r'(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)', armour)
+        thick_m = re.search(r'Thickness\s+mm\s+([\d.]+)\s*±', armour, re.I)
+        if strip_m:
+            layers.append({
+                "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
+                "nominal_thickness_mm": float(strip_m.group(2)), "thickness_type": "Nominal",
+                "armour_strip_width_mm": float(strip_m.group(1)),
+                "armour_strip_thickness_mm": float(strip_m.group(2)), "od_mm": None,
+            })
+        elif thick_m:
+            layers.append({
+                "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
+                "nominal_thickness_mm": float(thick_m.group(1)), "thickness_type": "Nominal",
+                "armour_strip_width_mm": None,
+                "armour_strip_thickness_mm": float(thick_m.group(1)), "od_mm": None,
+            })
+
+    # ── Outer sheath (section 10) ────────────────────────────────────────────
+    outer = sections.get("10", "")
+    overall_od = None
+    outer_m = re.search(r'Thickness\s*\(Minimum\)\s*mm\s+([\d.]+)', outer, re.I)
+    if outer_m:
+        outer_t = round(float(outer_m.group(1)) + 0.2, 4)
+        if re.search(r'FR-LSH|FRLSH|FR LSH', outer, re.I):
+            outer_mat = "frlsh_sheath"
+        elif re.search(r'LSZH|LSOH|LS0H', outer, re.I):
+            outer_mat = "lszh_outer_sheath"
+        else:
+            outer_mat = "pvc_outer_sheath"
+        layers.append({
+            "layer_name": "Outer Sheath", "material_key": outer_mat,
+            "nominal_thickness_mm": outer_t, "thickness_type": "Minimum",
+            "od_mm": None, "armour_strip_width_mm": None,
+            "armour_strip_thickness_mm": None, "tape_overlap_pct": None,
+            "tape_thickness_mm": None,
+        })
+    od_m = re.search(r'Diameter of Cable[^\n]*?mm\s+([\d.]+)', outer, re.I)
+    if od_m:
+        overall_od = float(od_m.group(1))
+
+    if len(layers) < 2:
+        return None
+
+    # ── Drum / delivery (section 12) ─────────────────────────────────────────
+    drum = sections.get("12", "")
+    delivery_m = 1000
+    del_m = re.search(r'Standard Packing length\s+mtr\s+(\d+)', drum, re.I)
+    if del_m:
+        delivery_m = int(del_m.group(1))
+    drum_type = "steel" if re.search(r'\bsteel\b', drum, re.I) else "wooden"
+
+    # ── Voltage (section 3) ──────────────────────────────────────────────────
+    volt_m = re.search(r'Voltage Grade\s+Volts\s+(\d+)', block, re.I)
+    voltage_kv = round(float(volt_m.group(1)) / 1000, 3) if volt_m else 1.1
+
+    return {
+        "item_no": item_no,
+        "gtp_ref": gtp_ref,
+        "designation": designation,
+        "config": config,
+        "num_cores": num_cores,
+        "conductor_area_mm2": area,
+        "conductor_material": conductor_material,
+        "conductor_shape": conductor_shape,
+        "conductor_class": conductor_class,
+        "fine_wire": fine_wire,
+        "num_wires": 7,
+        "wire_dia_mm": None,
+        "voltage_kv": voltage_kv,
+        "standard": "IS 1554-1",
+        "cable_type": "lt",
+        "dc_resistance_ohm_per_km": dc_resistance,
+        "neutral_dc_resistance_ohm_per_km": None,
+        "layers": layers,
+        "overall_od_mm": overall_od,
+        "overall_od_tolerance_mm": None,
+        "current_rating_A": None,
+        "delivery_length_m": delivery_m,
+        "drum_type": drum_type,
+        "n_pairs": 1,
+    }
+
+
+def _parse_srno_gtp(pdf_path: str, raw_text: str) -> dict:
+    """Parse a 'Sr No. Description Unit' lab-format GTP, possibly containing
+    several stacked cable variants of the same construction."""
+    header = raw_text[:400]
+    customer_m = re.search(r'(?:Company Name|Customer)\s*:\s*([^\n]+)', header, re.I)
+    project_m = re.search(r'Project\s*:\s*([^\n]+)', header, re.I)
+    date_m = re.search(r'Date\s*:\s*([^\n]+)', header, re.I)
+
+    blocks = _split_srno_blocks(raw_text)
+    cables = []
+    for i, block in enumerate(blocks, start=1):
+        cable = _parse_srno_cable(block, i)
+        if cable:
+            cables.append(cable)
+
+    gtp_ref = cables[0]["gtp_ref"] if cables and cables[0].get("gtp_ref") else None
+    for c in cables:
+        c.pop("gtp_ref", None)   # document-level field, not per-cable
+
+    return {
+        "gtp_ref": gtp_ref,
+        "customer": customer_m.group(1).strip() if customer_m else None,
+        "project": project_m.group(1).strip() if project_m else None,
+        "date": date_m.group(1).strip() if date_m else None,
+        "gtp_type": None,
+        "cables": cables,
+        "_parser": "direct_srno_datasheet",
     }
