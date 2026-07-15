@@ -750,6 +750,10 @@ def parse_gtp_direct(pdf_path: str, gtp_type_override: Optional[str] = None) -> 
         result = _parse_company_gtp(pdf_path, raw_text)
         result["cables"] = _validate_and_patch_cables(result["cables"])
         return result
+    if fmt == "company_single":
+        result = _parse_company_single_gtp(pdf_path, raw_text)
+        result["cables"] = _validate_and_patch_cables(result["cables"])
+        return result
     if fmt == "datasheet":
         result = _parse_datasheet_gtp(pdf_path, raw_text)
         result["cables"] = _validate_and_patch_cables(result["cables"])
@@ -813,11 +817,22 @@ _COMPANY_SECTION_MAP = {
 
 
 def _detect_format(raw_text: str) -> str:
-    """Return 'company', 'datasheet', 'wire_datasheet', 'srno_datasheet', or 'ravin'."""
+    """Return 'company', 'company_single', 'datasheet', 'wire_datasheet',
+    'srno_datasheet', or 'ravin'."""
     head = raw_text[:800]
-    # Multi-cable IS 17505 tabular format (company GTP)
+    # Multi-cable IS 17505 tabular format (company GTP) — "Sr. No." contiguous
+    # on one line, two designations side by side after "PROJECT :"
     if "Sr. No." in head and "PROJECT :" in head:
         return "company"
+    # Same company/IS-7098 template (N.0-numbered sections: 3.0 Conductor,
+    # 4.0 Insulation, ...), but one cable per page-pair instead of two side
+    # by side, and the "Sr. No." header cell wraps across lines so it never
+    # appears contiguous (e.g. "Sr." / "Description Unit" / "No." on
+    # separate lines).
+    if ("PROJECT :" in head and re.search(r"^Sr\.\s", head, re.M)
+            and re.search(r"^No\.\s", head, re.M)
+            and re.search(r"\bDescription\b", head) and re.search(r"\d\.0\s", head)):
+        return "company_single"
     # Single-cable technical data sheet (Sr No. without dot, Project :, Data Sheet no)
     if re.search(r"Sr\s*No\.?\s+Name", head) and re.search(r"Data Sheet no", head, re.I):
         return "datasheet"
@@ -862,6 +877,12 @@ def _col_vals(line: str) -> tuple:
       - Single value:   'Cross Sectional Area Phase sqmm 300' → (300, None)
     Returns (float|None, float|None).
     """
+    # Strip parenthetical annotations first — some sheets put an inline
+    # tolerance note *before* the actual value, e.g.
+    # "Size of armour ( ± 0.04 ) mm 1.4", which would otherwise be
+    # misread as the value itself (0.04 instead of 1.4).
+    line = re.sub(r'\([^)]*\)', '', line)
+
     # Tolerance format: value immediately before ±
     tol_vals = re.findall(r'(\d+(?:\.\d+)?)\s*±', line)
     if len(tol_vals) >= 2:
@@ -1106,6 +1127,7 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
     # ── Packing / delivery length (9.0 in Rallison format, 10.0 in others) ──
     pack_block = sections.get("9.0") or sections.get("10.0") or pair_text
     delivery_length = _delivery_length_company(pack_block, col)
+    drum_type = "steel" if re.search(r'\bsteel\b', pack_block, re.I) else "wooden"
 
     # ── Build layer list ──────────────────────────────────────────────────────
     layers = []
@@ -1210,7 +1232,7 @@ def _parse_company_cable(pair_text: str, col: int, item_no: int) -> Optional[dic
         "overall_od_tolerance_mm": 4.0,
         "current_rating_A": None,
         "delivery_length_m": delivery_length,
-        "drum_type": "wooden",
+        "drum_type": drum_type,
         "n_pairs": 1,
         "_raw_section_text": pair_text,
         "_col_index": col,
@@ -1259,6 +1281,50 @@ def _parse_company_gtp(pdf_path: str, raw_text: str) -> dict:
         "gtp_type": None,
         "cables": cables,
         "_parser": "direct_company",
+    }
+
+
+def _parse_company_single_gtp(pdf_path: str, raw_text: str) -> dict:
+    """
+    Parse a company/IS-7098 format GTP where each page-pair holds ONE cable
+    (not two side by side). Reuses _parse_company_cable's field-extraction
+    logic entirely — it already handles single-value data rows correctly —
+    just always with col=0, since there's no second column to read.
+    """
+    import os
+
+    pages = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            t = page.extract_text() or ""
+            pages.append(t)
+
+    cables = []
+    item_no = 1
+    for i in range(0, len(pages), 2):
+        page1 = pages[i]
+        page2 = pages[i + 1] if i + 1 < len(pages) else ""
+        pair_text = page1 + "\n" + page2
+
+        if "PROJECT :" not in pair_text:
+            continue
+
+        cable = _parse_company_cable(pair_text, 0, item_no)
+        if cable and cable.get("dc_resistance_ohm_per_km"):
+            cables.append(cable)
+            item_no += 1
+
+    first_page = pages[0] if pages else ""
+    customer_m = re.search(r"CUSTOMER\s*:\s*(.+)", first_page)
+
+    return {
+        "gtp_ref": os.path.splitext(os.path.basename(pdf_path))[0],
+        "customer": customer_m.group(1).strip() if customer_m else None,
+        "project": None,
+        "date": None,
+        "gtp_type": None,
+        "cables": cables,
+        "_parser": "direct_company_single",
     }
 
 
