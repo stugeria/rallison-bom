@@ -231,10 +231,16 @@ def run_bom_agent(
     requested_bom_type: str = "A",
     use_sheets: bool = True,
     output_dir: Optional[str] = None,
+    write_local: bool = True,
 ) -> dict:
     """
     Parse GTP, compute all 3 BOM types (A/B/C) for every cable, store in Sheets,
     and return pricing only for `requested_bom_type`.
+
+    write_local=False skips writing to the local registry (output/gtp_registry.xlsx)
+    and BOM detail store (output/bom_detail.xlsx), and skips margin persistence —
+    use this for batch/test runs so they don't pollute production state or
+    get silently deduped against real GTPs already in the registry.
 
     Returns:
         {
@@ -392,11 +398,12 @@ def run_bom_agent(
             for t in BOM_TYPES
         }
 
-        # Write to local registry (creates file if new, preserves margin if existing)
-        upsert_row(gtp_no, item_no, cable, prices, margin_pct)
+        if write_local:
+            # Write to local registry (creates file if new, preserves margin if existing)
+            upsert_row(gtp_no, item_no, cable, prices, margin_pct)
 
-        # Write per-layer BOM weights to bom_detail.xlsx
-        write_bom_rows(gtp_no, item_no, item_name, item_code, boms)
+            # Write per-layer BOM weights to bom_detail.xlsx
+            write_bom_rows(gtp_no, item_no, item_name, item_code, boms)
 
         cable_result = {
             "item_no": item_no, "item_name": item_name, "item_code": item_code,
