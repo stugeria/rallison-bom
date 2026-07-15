@@ -495,13 +495,24 @@ def run_bom_agent(
 
 # ── Telegram summary builder ──────────────────────────────────────────────────
 
+def _md_escape(text) -> str:
+    """Escape characters that break Telegram's legacy Markdown entity parser
+    (_, *, `, [) when GTP-derived text is interpolated into a *bold*/_italic_
+    span. Not needed inside ``` code blocks — Markdown entities aren't parsed
+    in there, so escaping there would just print literal backslashes."""
+    s = str(text)
+    for ch in ("_", "*", "`", "["):
+        s = s.replace(ch, "\\" + ch)
+    return s
+
+
 def _build_summary(gtp_no: str, bom_type: str, items: list[dict], price_key: str) -> str:
-    lines = [f"*GTP: {gtp_no} | BOM Type {bom_type}*\n"]
+    lines = [f"*GTP: {_md_escape(gtp_no)} | BOM Type {bom_type}*\n"]
 
     # Steel drum alerts
     steel_items = [r for r in items if r.get("steel_drum_alert")]
     if steel_items:
-        descs = ", ".join(r.get("config", r.get("item_name", "")) for r in steel_items)
+        descs = ", ".join(_md_escape(r.get("config", r.get("item_name", ""))) for r in steel_items)
         lines.append(f"⚠️ *Steel drum specified for: {descs}*")
         lines.append("_Please consider additional loading / handling cost before finalising price._\n")
 
@@ -510,7 +521,7 @@ def _build_summary(gtp_no: str, bom_type: str, items: list[dict], price_key: str
         price = r.get(price_key, 0)
         drum_note = f" _(drum: ₹{r.get('drum_cost_per_km', 0):,.0f}/km)_" if r.get("drum_cost_per_km") else ""
         lines.append(
-            f"*{r.get('config', '')} {r.get('item_name', '')}*\n"
+            f"*{_md_escape(r.get('config', ''))} {_md_escape(r.get('item_name', ''))}*\n"
             f"Price: ₹{price:,.0f}/km{drum_note}"
         )
         return "\n".join(lines)
@@ -539,7 +550,7 @@ def _build_rm_prices_used(items: list[dict], bom_type: str) -> Optional[str]:
     if not prices:
         return None
 
-    lines = [f"*Raw Material Prices Used (Type {bom_type})*", "```"]
+    lines = [f"*Raw Material Prices Used (Type {_md_escape(bom_type)})*", "```"]
     lines.append(f"{'Material':<24}{'Rs/kg':>10}")
     lines.append("─" * 34)
     for mat in sorted(prices):
@@ -566,9 +577,9 @@ def _build_item_detail(item: dict, bom_type: str) -> Optional[str]:
     selling_price = item.get(price_key, floor_cost)
 
     lines = [
-        f"*Item {item.get('item_no', '')} — {item.get('config', '')} {item.get('item_name', '')}* "
-        f"(Type {bom_type})",
-        f"_{item.get('delivery_length_m', '')}m {item.get('drum_type', '')} drum_",
+        f"*Item {item.get('item_no', '')} — {_md_escape(item.get('config', ''))} "
+        f"{_md_escape(item.get('item_name', ''))}* (Type {bom_type})",
+        f"_{item.get('delivery_length_m', '')}m {_md_escape(item.get('drum_type', ''))} drum_",
         "```",
         f"{'Layer':<23}{'Wt(kg/km)':>11}{'Rate(Rs/kg)':>13}{'Cost(Rs/km)':>13}",
         "─" * 60,
@@ -591,7 +602,7 @@ def _build_item_detail(item: dict, bom_type: str) -> Optional[str]:
 
     drum_source = item.get("drum_source")
     if drum_source:
-        lines.append(f"_Drum cost source: {drum_source}_")
+        lines.append(f"_Drum cost source: {_md_escape(drum_source)}_")
     if item.get("steel_drum_alert"):
         lines.append("⚠️ _Steel drum specified — review loading/handling cost._")
 
