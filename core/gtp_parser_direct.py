@@ -1775,8 +1775,47 @@ def _split_srno_numbered_sections(block: str) -> dict:
     sections = {}
     for i, (start, sec_id) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else len(block)
-        sections[sec_id] = block[start:end]
+        if sec_id not in sections:
+            # Keep the first occurrence — some sheets accidentally reuse a
+            # section number further down (e.g. a duplicate "9 Packing
+            # Detail" after "9 Sheath"), which would otherwise silently
+            # overwrite the real section's content.
+            sections[sec_id] = block[start:end]
     return sections
+
+
+def _find_srno_section(sections: dict, heading_pattern: str, exclude_pattern: Optional[str] = None) -> str:
+    """
+    Find a section by its heading text rather than a fixed section number —
+    section numbering shifts between cable sub-families (armoured vs
+    screened vs bare wire), so content-based lookup is more robust than
+    sections.get("9") style fixed lookups.
+    """
+    for text in sections.values():
+        first_line = text.split("\n", 1)[0]
+        if re.search(heading_pattern, first_line, re.I):
+            if exclude_pattern and re.search(exclude_pattern, first_line, re.I):
+                continue
+            return text
+    return ""
+
+
+def _srno_thickness_nominal_or_minimum(text: str) -> tuple:
+    """
+    Returns (thickness_mm, thickness_type), preferring Nominal over Minimum
+    per the same convention used elsewhere in this file. Tolerant of:
+      - full words ("Nominal"/"Minimum") and abbreviations ("Nom"/"Min")
+      - "Thickness (Nominal)" and "Thickness of Sheath (Nominal)" label styles
+      - an inline "#" marker some sheets add after the unit tag
+    Minimum-only values get the standard +0.2mm manufacturing tolerance.
+    """
+    nom_m = re.search(r'Thickness(?:\s+of\s+\w+)?\s*\(Nom(?:inal)?\)\s*#?\s*mm\s+([\d.]+)', text, re.I)
+    if nom_m:
+        return float(nom_m.group(1)), "Nominal"
+    min_m = re.search(r'Thickness(?:\s+of\s+\w+)?\s*\(Min(?:imum)?\)\s*#?\s*mm\s+([\d.]+)', text, re.I)
+    if min_m:
+        return round(float(min_m.group(1)) + 0.2, 4), "Minimum"
+    return None, None
 
 
 def _parse_srno_cable(block: str, item_no: int) -> Optional[dict]:
@@ -1842,55 +1881,67 @@ def _parse_srno_cable(block: str, item_no: int) -> Optional[dict]:
             "tape_thickness_mm": None,
         })
 
-    # ── Inner sheath (section 8) — Minimum-only values get the standard +0.2mm
-    # manufacturing tolerance applied, same convention as the other parsers ──
-    inner = sections.get("8", "")
-    inner_m = re.search(r'Thickness\s*\(Minimum\)\s*mm\s+([\d.]+)', inner, re.I)
-    if inner_m:
-        inner_t = round(float(inner_m.group(1)) + 0.2, 4)
+    # ── Inner sheath — armoured constructions only ("Inner Sheath" heading) ──
+    inner = _find_srno_section(sections, r'Inner\s+Sheath')
+    inner_t, inner_t_type = _srno_thickness_nominal_or_minimum(inner)
+    if inner_t:
         inner_mat = "lszh_inner_sheath" if re.search(r'LSZH|LSOH|LS0H', inner, re.I) else "pvc_inner_sheath"
         layers.append({
             "layer_name": "Inner Sheath", "material_key": inner_mat,
-            "nominal_thickness_mm": inner_t, "thickness_type": "Minimum",
+            "nominal_thickness_mm": inner_t, "thickness_type": inner_t_type,
             "od_mm": None, "armour_strip_width_mm": None,
             "armour_strip_thickness_mm": None, "tape_overlap_pct": None,
             "tape_thickness_mm": None,
         })
 
-    # ── Armour (section 9) ───────────────────────────────────────────────────
-    armour = sections.get("9", "")
-    is_round_wire = bool(re.search(r'round\s+wire', armour, re.I))
-    if is_round_wire:
-        dia_m = re.search(r'Thickness\s+mm\s+([\d.]+)\s*±', armour, re.I)
-        if dia_m:
-            layers.append({
-                "layer_name": "GS Round Wire Armour", "material_key": "gs_round_wire_armour",
-                "wire_diameter_mm": float(dia_m.group(1)), "gap_mm": 0.5, "od_mm": None,
-            })
-    else:
-        strip_m = re.search(r'(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)', armour)
-        thick_m = re.search(r'Thickness\s+mm\s+([\d.]+)\s*±', armour, re.I)
-        if strip_m:
-            layers.append({
-                "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
-                "nominal_thickness_mm": float(strip_m.group(2)), "thickness_type": "Nominal",
-                "armour_strip_width_mm": float(strip_m.group(1)),
-                "armour_strip_thickness_mm": float(strip_m.group(2)), "od_mm": None,
-            })
-        elif thick_m:
-            layers.append({
-                "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
-                "nominal_thickness_mm": float(thick_m.group(1)), "thickness_type": "Nominal",
-                "armour_strip_width_mm": None,
-                "armour_strip_thickness_mm": float(thick_m.group(1)), "od_mm": None,
-            })
+    # ── Armour — found by heading, not a fixed section number ────────────────
+    armour = _find_srno_section(sections, r'Armour')
+    if armour:
+        if re.search(r'\bstrip\b|\bflat\b', armour, re.I):
+            is_round_wire = False
+        elif re.search(r'\bwire\b', armour, re.I):
+            # "Round Wire", "Steel Wire Armoured", "GS Wire" etc. all mean round wire
+            # unless explicitly a flat strip — most BS/IS armoured cables at these
+            # sizes use round wire, and the word "round" isn't always spelled out.
+            is_round_wire = True
+        else:
+            is_round_wire = False
 
-    # ── Outer sheath (section 10) ────────────────────────────────────────────
-    outer = sections.get("10", "")
+        if is_round_wire:
+            dia_m = re.search(r'Thickness\s+mm\s+([\d.]+)', armour, re.I)
+            if dia_m:
+                layers.append({
+                    "layer_name": "GS Round Wire Armour", "material_key": "gs_round_wire_armour",
+                    "wire_diameter_mm": float(dia_m.group(1)), "gap_mm": 0.5, "od_mm": None,
+                })
+        else:
+            strip_m = re.search(r'(\d+(?:\.\d+)?)\s*[xX×]\s*(\d+(?:\.\d+)?)', armour)
+            thick_m = re.search(r'Thickness\s+mm\s+([\d.]+)', armour, re.I)
+            if strip_m:
+                layers.append({
+                    "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
+                    "nominal_thickness_mm": float(strip_m.group(2)), "thickness_type": "Nominal",
+                    "armour_strip_width_mm": float(strip_m.group(1)),
+                    "armour_strip_thickness_mm": float(strip_m.group(2)), "od_mm": None,
+                })
+            elif thick_m:
+                layers.append({
+                    "layer_name": "GS Flat Strip Armour", "material_key": "gs_flat_strip_armour",
+                    "nominal_thickness_mm": float(thick_m.group(1)), "thickness_type": "Nominal",
+                    "armour_strip_width_mm": None,
+                    "armour_strip_thickness_mm": float(thick_m.group(1)), "od_mm": None,
+                })
+
+    # ── Outer/only sheath — "Outer Sheath" (armoured) or a standalone
+    # "Sheath" section (unarmoured/screened cables have just one) ────────────
+    outer = _find_srno_section(sections, r'Outer\s+Sheath')
+    layer_label = "Outer Sheath"
+    if not outer:
+        outer = _find_srno_section(sections, r'\bSheath\b', exclude_pattern=r'Inner\s+Sheath')
+        layer_label = "Sheath"
     overall_od = None
-    outer_m = re.search(r'Thickness\s*\(Minimum\)\s*mm\s+([\d.]+)', outer, re.I)
-    if outer_m:
-        outer_t = round(float(outer_m.group(1)) + 0.2, 4)
+    outer_t, outer_t_type = _srno_thickness_nominal_or_minimum(outer)
+    if outer_t:
         if re.search(r'FR-LSH|FRLSH|FR LSH', outer, re.I):
             outer_mat = "frlsh_sheath"
         elif re.search(r'LSZH|LSOH|LS0H', outer, re.I):
@@ -1898,30 +1949,35 @@ def _parse_srno_cable(block: str, item_no: int) -> Optional[dict]:
         else:
             outer_mat = "pvc_outer_sheath"
         layers.append({
-            "layer_name": "Outer Sheath", "material_key": outer_mat,
-            "nominal_thickness_mm": outer_t, "thickness_type": "Minimum",
+            "layer_name": layer_label, "material_key": outer_mat,
+            "nominal_thickness_mm": outer_t, "thickness_type": outer_t_type,
             "od_mm": None, "armour_strip_width_mm": None,
             "armour_strip_thickness_mm": None, "tape_overlap_pct": None,
             "tape_thickness_mm": None,
         })
-    od_m = re.search(r'Diameter of Cable[^\n]*?mm\s+([\d.]+)', outer, re.I)
+    od_m = re.search(r'Diameter[^\n]*?mm\s+([\d.]+)', outer, re.I)
     if od_m:
         overall_od = float(od_m.group(1))
 
-    if len(layers) < 2:
+    if len(layers) < 1:
         return None
 
-    # ── Drum / delivery (section 12) ─────────────────────────────────────────
-    drum = sections.get("12", "")
+    # ── Drum / delivery — found by heading ("Packing Detail") ────────────────
+    drum = _find_srno_section(sections, r'Packing')
     delivery_m = 1000
     del_m = re.search(r'Standard Packing length\s+mtr\s+(\d+)', drum, re.I)
     if del_m:
         delivery_m = int(del_m.group(1))
     drum_type = "steel" if re.search(r'\bsteel\b', drum, re.I) else "wooden"
 
-    # ── Voltage (section 3) ──────────────────────────────────────────────────
-    volt_m = re.search(r'Voltage Grade\s+Volts\s+(\d+)', block, re.I)
-    voltage_kv = round(float(volt_m.group(1)) / 1000, 3) if volt_m else 1.1
+    # ── Voltage (section 3) — "1100" or phase/line pair "600/1000" ───────────
+    volt_m = re.search(r'Voltage Grade\s+Volts\s+(\d+)(?:\s*/\s*(\d+))?', block, re.I)
+    if volt_m:
+        # For a phase/line pair, the line (second) voltage is the standard rating
+        volts = float(volt_m.group(2) or volt_m.group(1))
+        voltage_kv = round(volts / 1000, 3)
+    else:
+        voltage_kv = 1.1
 
     return {
         "item_no": item_no,
